@@ -4,11 +4,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import ru.kata.spring.boot_security.demo.Dao.UserDao;
 import ru.kata.spring.boot_security.demo.models.Role;
 import ru.kata.spring.boot_security.demo.models.User;
+import ru.kata.spring.boot_security.demo.services.RoleService;
 import ru.kata.spring.boot_security.demo.services.RoleServiceImpl;
 import ru.kata.spring.boot_security.demo.services.UserService;
+import ru.kata.spring.boot_security.demo.services.UserServiceImpl;
 
 import java.security.Principal;
 import java.util.List;
@@ -19,10 +20,10 @@ import java.util.List;
 public class AdminControllers {
     private final UserService userService;
 
-    private final RoleServiceImpl roleService;
+    private final RoleService roleService;
 
     @Autowired
-    public AdminControllers(UserService userService, RoleServiceImpl roleService, UserDao userDao) {
+    public AdminControllers(UserService userService, RoleService roleService) {
         this.userService = userService;
         this.roleService = roleService;
     }
@@ -33,7 +34,8 @@ public class AdminControllers {
         model.addAttribute("users", userService.allUsers());
         User user = new User();
         model.addAttribute("user", user);
-        model.addAttribute("infoTop", userService.findUserById(id));
+        User userInfo = userService.findUserById(id);
+        model.addAttribute("infoTop", userInfo);
         List<Role> setRoles = roleService.getRoles();
         model.addAttribute("list", setRoles);
         return "listUsers";

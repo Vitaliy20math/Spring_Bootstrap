@@ -3,8 +3,8 @@ package ru.kata.spring.boot_security.demo.init;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
-import ru.kata.spring.boot_security.demo.Dao.RoleDao;
-import ru.kata.spring.boot_security.demo.Dao.UserDao;
+import ru.kata.spring.boot_security.demo.dao.RoleDao;
+import ru.kata.spring.boot_security.demo.dao.UserDao;
 import ru.kata.spring.boot_security.demo.models.Role;
 import ru.kata.spring.boot_security.demo.models.User;
 
