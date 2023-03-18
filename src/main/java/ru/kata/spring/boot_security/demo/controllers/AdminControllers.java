@@ -7,12 +7,14 @@ import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.models.Role;
 import ru.kata.spring.boot_security.demo.models.User;
 import ru.kata.spring.boot_security.demo.services.RoleService;
-import ru.kata.spring.boot_security.demo.services.RoleServiceImpl;
 import ru.kata.spring.boot_security.demo.services.UserService;
-import ru.kata.spring.boot_security.demo.services.UserServiceImpl;
 
+import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 
 @Controller
@@ -32,19 +34,10 @@ public class AdminControllers {
     public String index(Model model, Principal principal) {
         Long id = userService.findByUsername(principal.getName()).getId();
         model.addAttribute("users", userService.allUsers());
-        User user = new User();
-        model.addAttribute("user", user);
-        User userInfo = userService.findUserById(id);
-        model.addAttribute("infoTop", userInfo);
-        List<Role> setRoles = roleService.getRoles();
-        model.addAttribute("list", setRoles);
+        model.addAttribute("user", new User());
+        model.addAttribute("infoTop", userService.findUserById(id));
+        model.addAttribute("list", roleService.getRoles());
         return "listUsers";
-    }
-
-    @GetMapping("/{id}")
-    public String getById(@PathVariable("id") Long id, Model model) {
-        model.addAttribute("userId", userService.findUserById(id));
-        return "userById";
     }
 
     @GetMapping("/create")
@@ -70,8 +63,10 @@ public class AdminControllers {
         return "edit";
     }
 
+
+
     @PatchMapping("/{id}")
-    public String update(@ModelAttribute("user") User user, @PathVariable("id") Long id) {
+    public String update(@ModelAttribute("userUp") User user, @PathVariable("id") Long id) {
         System.err.println("point three: " + user);
         userService.update(user, id);
         return "redirect:/admin";
